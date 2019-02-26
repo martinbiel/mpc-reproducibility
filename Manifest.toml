@@ -69,7 +69,9 @@ version = "0.5.1"
 
 [[DABenchmarks]]
 deps = ["Arpack", "BenchmarkTools", "Colors", "Distributed", "HydroModels", "LShapedSolvers", "LaTeXStrings", "Logging", "Printf", "ProgressiveHedgingSolvers", "RecipesBase", "Statistics", "StochasticPrograms", "TraitDispatch"]
-path = "DABenchmarks"
+git-tree-sha1 = "0454284ea102500eeee24cf572e713d152543e07"
+repo-rev = "master"
+repo-url = "/DABenchmarks"
 uuid = "8ac9f9bc-1ee6-11e9-0149-7f85d738cfd8"
 version = "0.1.0"
 
@@ -139,12 +141,6 @@ git-tree-sha1 = "41bd911efffb56957b45366770eaaa443de3f782"
 uuid = "28b8d3ca-fb5f-59d9-8090-bfdbd6d07a71"
 version = "0.38.1"
 
-[[Gurobi]]
-deps = ["Compat", "Libdl", "LinQuadOptInterface", "MathProgBase"]
-git-tree-sha1 = "c2e1b1d4ce50764188c6496f298fa58bbf5e923e"
-uuid = "2e9cd046-0924-5485-92f1-d5272153d98b"
-version = "0.6.0"
-
 [[HydroModels]]
 deps = ["DelimitedFiles", "Distributions", "GLPKMathProgInterface", "JuMP", "LinearAlgebra", "MacroTools", "MathProgBase", "Parameters", "Plots", "Printf", "RecipesBase", "Reexport", "Statistics", "StochasticPrograms"]
 git-tree-sha1 = "50afda0073569cc22193173149e745e238ee6fc7"
@@ -176,9 +172,9 @@ uuid = "4076af6c-e467-56ae-b986-b466b2749572"
 version = "0.18.5"
 
 [[LShapedSolvers]]
-deps = ["Distributed", "Gurobi", "JuMP", "LinearAlgebra", "MathProgBase", "Parameters", "Printf", "ProgressMeter", "RecipesBase", "SparseArrays", "StochasticPrograms", "TraitDispatch"]
-git-tree-sha1 = "50e53e231f54b37db4409c9ef66e38de2d7572ad"
-repo-rev = "3a6b1c40bbea4cea9ce391f52fb463b0b1c27fe4"
+deps = ["Distributed", "JuMP", "LinearAlgebra", "MathProgBase", "Parameters", "Printf", "ProgressMeter", "RecipesBase", "SparseArrays", "StochasticPrograms", "TraitDispatch"]
+git-tree-sha1 = "677713174ca4c6cd439bc0c485dbf521421078a7"
+repo-rev = "9936507c5e2818eca91a181b5d088f156b2bd29f"
 repo-url = "https://github.com/martinbiel/LShapedSolvers.jl"
 uuid = "c132518a-c710-11e8-267a-6b0667a43ff3"
 version = "0.1.0"
@@ -312,10 +308,10 @@ uuid = "0e00fe8a-c7c5-11e8-1e0e-6798366c097c"
 version = "0.1.0"
 
 [[PyCall]]
-deps = ["Conda", "Dates", "Libdl", "LinearAlgebra", "MacroTools", "Serialization", "Statistics", "Test", "VersionParsing"]
-git-tree-sha1 = "a77c1841800535a02b65be1e2b8202b0d66f8b92"
+deps = ["Compat", "Conda", "MacroTools", "Statistics", "VersionParsing"]
+git-tree-sha1 = "ce4681263f41d98b3faf6107b28284bf8b866f5f"
 uuid = "438e738f-606a-5dbb-bf0a-cddfbfd45ab0"
-version = "1.90.0"
+version = "1.18.5"
 
 [[PyPlot]]
 deps = ["Colors", "Compat", "LaTeXStrings", "PyCall", "VersionParsing"]

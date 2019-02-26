@@ -8,14 +8,12 @@ pyplot()
 Random.seed!(0)
 
 using Distributed
-machine = [("MACHINENAME", 28)]
-addprocs(machine, dir = "/home/USER", exename="/path/to/julia", exeflags="--project") # Remove if worker processors are not available
-# addprocs(28, exeflags="--project") # For local workers
+addprocs(28, exeflags="--project")
 
 @everywhere using StochasticPrograms
 @everywhere using LShapedSolvers
 @everywhere using HydroModels
-@everywhere using Gurobi
+@everywhere using GLPKMathProgInterface
 
 function confidence_intervals(sample_sizes::Vector{Int}, solver)
     intervals = zeros(length(sample_sizes))
@@ -38,7 +36,7 @@ end
 
 sample_sizes = [10,100,500,1000]
 
-ls = LShapedSolver(GurobiSolver(OutputFlag=0), subsolver = ()->GurobiSolver(OutputFlag=0), distributed = true, regularization = :tr, κ = 1.0, bundle = 2, log = false)
+ls = LShapedSolver(GLPKSolverLP(), subsolver = ()->GLPKSolverLP(), distributed = true, regularization = :tr, κ = 1.0, bundle = 2, log = false)
 
 intervals = confidence_intervals(sample_sizes, ls)
 

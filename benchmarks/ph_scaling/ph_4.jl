@@ -5,17 +5,15 @@ using LaTeXStrings
 Random.seed!(0)
 
 using Distributed
-machine = [("MACHINENAME", 4)]
-addprocs(machine, dir = "/home/USER", exename="/path/to/julia", exeflags="--project")
-# addprocs(4, exeflags="--project") # For local workers
+addprocs(4, exeflags="--project")
 
 @everywhere using StochasticPrograms
 @everywhere using ProgressiveHedgingSolvers
 @everywhere using HydroModels
-@everywhere using Gurobi
+@everywhere using Ipopt
 
 function prepare_dbenchmark(nscenarios::Integer, nsamples::Integer; timeout::Integer = 1000)
-    ph = ProgressiveHedgingSolver(()->GurobiSolver(OutputFlag=0), execution = :synchronous, penalty = :adaptive, ζ = 0.01, α = 0.75, log = false, τ = 5e-6)
+    ph = ProgressiveHedgingSolver(()->IpoptSolver(print_level=0), execution = :synchronous, penalty = :adaptive, ζ = 0.01, α = 0.75, log = false, τ = 5e-6)
     solvers = [ph]
     solvernames = ["Synchronous progressive-hedging"]
     # Create Day-ahead benchmark

@@ -5,18 +5,16 @@ using LaTeXStrings
 Random.seed!(0)
 
 using Distributed
-machine = [("MACHINENAME", 2)]
-addprocs(machine, dir = "/home/USER", exename="/path/to/julia", exeflags="--project")
-# addprocs(2, exeflags="--project") # For local workers
+addprocs(2, exeflags="--project")
 
 @everywhere using StochasticPrograms
 @everywhere using LShapedSolvers
 @everywhere using HydroModels
-@everywhere using Gurobi
+@everywhere using GLPKMathProgInterface
 
 function prepare_dbenchmark(nscenarios::Integer, nsamples::Integer; timeout::Integer = 1000)
-    dls = LShapedSolver(GurobiSolver(OutputFlag=0), log=false, distributed = true, subsolver = ()->GurobiSolver(OutputFlag=0), κ=1.0)
-    dtr = LShapedSolver(GurobiSolver(OutputFlag=0), regularization = :tr, log=false, distributed = true, subsolver = ()->GurobiSolver(OutputFlag=0), κ=1.0)
+    dls = LShapedSolver(GLPKSolverLP(), log=false, distributed = true, subsolver = ()->GLPKSolverLP(), κ=1.0)
+    dtr = LShapedSolver(GLPKSolverLP(), regularization = :tr, log=false, distributed = true, subsolver = ()->GLPKSolverLP(), κ=1.0)
     solvers = [dls,dtr]
     solvernames = ["Distributed L-shaped","Distributed L-shaped with trust-region"]
     # Create Day-ahead benchmark

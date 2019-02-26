@@ -4,21 +4,19 @@ using DABenchmarks
 Random.seed!(0)
 
 using Distributed
-machine = [("MACHINENAME", 8)]
-addprocs(machine, dir = "/home/USER", exename="/path/to/julia", exeflags="--project")
-# addprocs(8, exeflags="--project") # For local workers
+addprocs(8, exeflags="--project")
 
 @everywhere using StochasticPrograms
 @everywhere using LShapedSolvers
 @everywhere using HydroModels
-@everywhere using Gurobi
+@everywhere using GLPKMathProgInterface
 
 function prepare_dbenchmark(nscenarios::Integer, nsamples::Integer; timeout::Integer = 1000)
-    dtr_1 = LShapedSolver(GurobiSolver(OutputFlag=0), regularization = :tr, log=false, distributed = true, subsolver = ()->GurobiSolver(OutputFlag=0), κ=1.0, bundle = 1)
-    dtr_10 = LShapedSolver(GurobiSolver(OutputFlag=0), regularization = :tr, log=false, distributed = true, subsolver = ()->GurobiSolver(OutputFlag=0), κ=1.0, bundle = 10)
-    dtr_50 = LShapedSolver(GurobiSolver(OutputFlag=0), regularization = :tr, log=false, distributed = true, subsolver = ()->GurobiSolver(OutputFlag=0), κ = 1.0, bundle = 50)
-    dtr_100 = LShapedSolver(GurobiSolver(OutputFlag=0), regularization = :tr, log=false, distributed = true, subsolver = ()->GurobiSolver(OutputFlag=0), κ = 1.0, bundle = 100)
-    dtr_125 = LShapedSolver(GurobiSolver(OutputFlag=0), regularization = :tr, log=false, distributed = true, subsolver = ()->GurobiSolver(OutputFlag=0), κ=1.0, bundle = 125)
+    dtr_1 = LShapedSolver(GLPKSolverLP(), regularization = :tr, log=false, distributed = true, subsolver = ()->GLPKSolverLP(), κ=1.0, bundle = 1)
+    dtr_10 = LShapedSolver(GLPKSolverLP(), regularization = :tr, log=false, distributed = true, subsolver = ()->GLPKSolverLP(), κ=1.0, bundle = 10)
+    dtr_50 = LShapedSolver(GLPKSolverLP(), regularization = :tr, log=false, distributed = true, subsolver = ()->GLPKSolverLP(), κ = 1.0, bundle = 50)
+    dtr_100 = LShapedSolver(GLPKSolverLP(), regularization = :tr, log=false, distributed = true, subsolver = ()->GLPKSolverLP(), κ = 1.0, bundle = 100)
+    dtr_125 = LShapedSolver(GLPKSolverLP(), regularization = :tr, log=false, distributed = true, subsolver = ()->GLPKSolverLP(), κ=1.0, bundle = 125)
     solvers = [dtr_1, dtr_10, dtr_50, dtr_100, dtr_125]
     solvernames = ["1", "10", "50", "100", "125"]
     # Create Day-ahead benchmark

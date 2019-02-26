@@ -4,11 +4,11 @@ using LaTeXStrings
 
 Random.seed!(0)
 
-using Gurobi
+using Ipopt
 using ProgressiveHedgingSolvers
 
 function prepare_dbenchmark(nscenarios::Integer, nsamples::Integer; timeout::Integer = 1000)
-    ph = ProgressiveHedgingSolver(()->GurobiSolver(OutputFlag=0), penalty = :adaptive, ζ = 100, log = false, τ = 1e-5)
+    ph = ProgressiveHedgingSolver(()->IpoptSolver(print_level=0), penalty = :adaptive, ζ = 100, log = false, τ = 1e-5)
     solvers = [ph]
     solvernames = ["Synchronous progressive-hedging"]
     # Create Day-ahead benchmark

@@ -2,7 +2,8 @@ using StochasticPrograms
 using LShapedSolvers
 using ProgressiveHedgingSolvers
 using LaTeXStrings
-using Gurobi
+using GLPKMathProgInterface
+using Ipopt
 using Plots
 pyplot()
 
@@ -59,16 +60,17 @@ farmer_model = StochasticModel((Crops,Cost,Budget), (Required,PurchasePrice,Sell
     end
 end)
 farmer_problem = instantiate(farmer_model, [ξ₁,ξ₂,ξ₃])
-gurobi = GurobiSolver(OutputFlag=0)
-optimize!(farmer_problem, solver = gurobi)
+glpk = GLPKSolverLP()
+ipopt = IpoptSolver(print_level=0)
+optimize!(farmer_problem, solver = glpk)
 Q = optimal_value(farmer_problem)
 @info "Solving farmer problem using progressive-hedging"
-sm = StochasticPrograms.StructuredModel(farmer_problem, ProgressiveHedgingSolver(gurobi))
+sm = StochasticPrograms.StructuredModel(farmer_problem, ProgressiveHedgingSolver(ipopt))
 sm()
 p = plot(sm.Q_history./Q, color_palette = KTH_colors, label="Progressive-hedging", linewidth = 4, xlabel = "Iterations", ylabel = L"\frac{Q_k}{Q^*}")
 savefig(p, "farmer_ph.pdf")
 @info "Solving farmer problem using L-shaped"
-sm = StochasticPrograms.StructuredModel(farmer_problem, LShapedSolver(gurobi))
+sm = StochasticPrograms.StructuredModel(farmer_problem, LShapedSolver(glpk))
 sm()
 p = plot(sm.Q_history./Q, label="L-shaped", color_palette = KTH_colors, linewidth = 4, xlabel = "Iterations", ylabel = L"\frac{Q_k}{Q^*}")
 savefig(p, "farmer_ls.pdf")
